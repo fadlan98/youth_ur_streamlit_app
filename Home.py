@@ -22,7 +22,13 @@ if monthly_file is None:
     st.info("Upload monthly_unemployment.csv to use Home/ETS/ARIMA.")
     st.stop()
 
-df = load_monthly_csv(monthly_file)
+try:
+    df = load_monthly_csv(monthly_file)
+except ValueError as e:
+    st.error("Wrong dataset uploaded. Please upload the monthly unemployment CSV that contains: date, u_rate_15_24.")
+    st.caption(f"Details: {e}")
+    st.stop()
+
 y = df.set_index("date")["u_rate_15_24"].dropna().sort_index()
 
 if view == "Home":

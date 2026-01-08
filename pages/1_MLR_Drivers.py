@@ -15,7 +15,13 @@ if annual_file is None:
     st.info("Upload annual_youth_drivers_wide.csv to run MLR.")
     st.stop()
 
-dfA = load_annual_csv(annual_file)
+try:
+    dfA = load_annual_csv(annual_file)
+except ValueError as e:
+    st.error("Wrong dataset uploaded. Please upload the annual drivers CSV (year, youth_ur, gdp_growth_yoy, share_uppersec, neet_15_24, inflation_yoy, fdi_net).")
+    st.caption(f"Details: {e}")
+    st.stop()
+
 
 feature_cols = ["gdp_growth_yoy", "share_uppersec", "neet_15_24", "inflation_yoy", "fdi_net"]
 target_col = "youth_ur"
